@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">⚡ Admin Panel</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}" class="active">Dashboard</a>
+    <a href="{{ url_for('admin_teams') }}">Teams</a>
+    <a href="{{ url_for('admin_logout') }}">Logout</a>
+  </nav>
+</header>
+
+<div class="dashboard-wrapper">
+  <h1 class="dashboard-title">Admin Dashboard</h1>
+
+  <div class="dash-grid-top">
+
+    <section class="card dash-card">
+      <h2>Live Updates</h2>
+      <form method="POST" action="{{ url_for('admin_add_update') }}">
+        <textarea name="text" required></textarea>
+        <button class="primary-btn full-width">Add</button>
+      </form>
+
+      <ul class="list-box">
+        {% for u in updates %}
+          <li>{{ u.text }}
+            <a href="{{ url_for('admin_delete_update', id=u.id) }}" style="float:right;color:#f55;">delete</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="card dash-card">
+      <h2>Notifications</h2>
+      <form method="POST" action="{{ url_for('admin_add_notification') }}">
+        <textarea name="text" required></textarea>
+        <button class="primary-btn full-width">Add</button>
+      </form>
+
+      <ul class="list-box">
+        {% for n in notifications %}
+          <li>{{ n.text }}
+            <a href="{{ url_for('admin_delete_notification', id=n.id) }}" style="float:right;color:#f55;">delete</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Project – Hackathon Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">⚡ Hackathon Portal</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </nav>
+</header>
+
+<div class="form-container">
+  <h2>Project Submission</h2>
+  <p class="form-subtitle">Submit GitHub link and demo video</p>
+
+  <form method="POST" action="{{ url_for('submit') }}">
+    <label>Project Title</label>
+    <input type="text" name="title" required placeholder="Enter project title">
+
+    <label>Description</label>
+    <textarea name="desc" required placeholder="Describe your project"></textarea>
+
+    <label>GitHub Repository Link</label>
+    <input type="text" name="github" required placeholder="https://github.com/...">
+
+    <label>Demo Video Link</label>
+    <input type="text" name="video" required placeholder="YouTube link">
+
+    <button type="submit" class="primary-btn full-width">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>

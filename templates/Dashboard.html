@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard – Hackathon Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">⚡ Hackathon Portal</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+    <a href="{{ url_for('leaderboard') }}">Leaderboard</a>
+    <a href="{{ url_for('sponsors_page') }}">Sponsors</a>
+    <a href="{{ url_for('faq') }}">FAQ</a>
+    <a href="{{ url_for('feedback') }}">Feedback</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </nav>
+</header>
+
+<div class="dashboard-wrapper">
+  <h1 class="dashboard-title">Welcome, {{ user.name }}</h1>
+  <p class="dashboard-subtitle">Email: {{ user.email }} · College: {{ user.college }}</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <p style="margin-top:8px;font-size:0.9rem;
+          color:{% if category=='error' %}#f97373{% elif category=='success' %}#22c55e{% else %}#e5e7eb{% endif %};">
+          {{ msg }}
+        </p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="dash-nav">
+    <a href="#my-team" class="dash-nav-btn">My Team</a>
+    <a href="#submission-status" class="dash-nav-btn">Submission</a>
+    <a href="#live-updates" class="dash-nav-btn">Live Updates</a>
+    <a href="#notifications" class="dash-nav-btn">Notifications</a>
+    <a href="#sponsors" class="dash-nav-btn">Sponsors</a>
+    <a href="{{ url_for('submit') }}" class="dash-nav-btn">Submit Project</a>
+  </div>
+
+  <div class="dash-grid-top">
+    <section class="card dash-card">
+      <h2>Event Status</h2>
+      <p class="status-line"><strong>Phase:</strong> Hackathon In Progress</p>
+      <p class="status-line"><strong>Deadline:</strong> Check countdown</p>
+      <p class="status-note">Submit your project before the deadline.</p>
+    </section>
+
+    <section class="card dash-card">
+      <h2>Countdown</h2>
+      <p class="status-line">Time remaining:</p>
+      <div id="dash-countdown" class="countdown-timer" data-end="{{ hackathon_end_iso }}">
+        Loading...
+      </div>
+    </section>
+
+    <section class="card dash-card" id="submission-status">
+      <h2>Submission Status</h2>
+      {% if submission %}
+        <p class="status-line"><strong>Title:</strong> {{ submission.title }}</p>
+        <p class="status-line"><strong>GitHub:</strong> <a href="{{ submission.github }}" target="_blank">Open</a></p>
+        <p class="status-line"><strong>Demo Video:</strong> <a href="{{ submission.video }}" target="_blank">Watch</a></p>
+        <p class="status-note">You can update your submission anytime before the deadline.</p>
+      {% else %}
+        <p class="status-line"><strong>Status:</strong> Not Submitted</p>
+        <p class="status-note"><a href="{{ url_for('submit') }}">Click here to submit your project.</a></p>
+      {% endif %}
+    </section>
+  </div>
+
+  <section class="card dash-card" id="my-team">
+    <h2>My Team</h2>
+    <p class="status-line"><strong>Team Name:</strong> {{ team.team_name if team else 'Not set' }}</p>
+    <p class="status-line"><strong>Invite Code:</strong> {{ team.invite_code if team else 'Not set' }}</p>
+    <p class="status-line"><strong>Members:</strong></p>
+    <ul class="list-box">
+      {% for member in team_members %}
+        <li>{{ member.name }} – {{ member.college }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <div class="dash-grid-mid">
+    <section class="card dash-card" id="live-updates">
+      <h2>Live Updates</h2>
+      <ul class="list-box">
+        {% if live_updates %}
+          {% for u in live_updates %}
+            <li>{{ u.text }}</li>
+          {% endfor %}
+        {% else %}
+          <li>No updates yet.</li>
+        {% endif %}
+      </ul>
+    </section>
+
+    <section class="card dash-card" id="notifications">
+      <h2>Notifications</h2>
+      <ul class="list-box">
+        {% if notifications %}
+          {% for n in notifications %}
+            <li>{{ n.text }}</li>
+          {% endfor %}
+        {% else %}
+          <li>No notifications yet.</li>
+        {% endif %}
+      </ul>
+    </section>
+  </div>
+
+  <section class="card dash-card" id="sponsors">
+    <h2>Sponsors</h2>
+    <div class="sponsor-flex">
+      {% for sp in sponsors %}
+        <div class="sponsor-chip">{{ sp.name }} – {{ sp.tier }} Sponsor</div>
+      {% endfor %}
+    </div>
+    <p class="status-note" style="margin-top:10px;">
+      See more on the <a href="{{ url_for('sponsors_page') }}">Sponsors page</a>.
+    </p>
+  </section>
+</div>
+
+<script>
+  function startCountdown(elemId) {
+    const el = document.getElementById(elemId);
+    if (!el) return;
+    const end = new Date(el.dataset.end);
+
+    function update() {
+      const now = new Date();
+      const diff = end - now;
+      if (diff <= 0) {
+        el.textContent = "Hackathon ended 🎉";
+        return;
+      }
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      el.textContent =
+        (days > 0 ? days + "d " : "") +
+        String(hours).padStart(2, "0") + "h " +
+        String(minutes).padStart(2, "0") + "m " +
+        String(seconds).padStart(2, "0") + "s";
+    }
+
+    update();
+    setInterval(update, 1000);
+  }
+
+  startCountdown("dash-countdown");
+</script>
+</body>
+</html>
