@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Teams – Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">⚡ Admin Panel</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('admin_teams') }}" class="active">Teams</a>
+   
+    <a href="{{ url_for('admin_logout') }}">Logout</a>
+  </nav>
+</header>
+
+<div class="dashboard-wrapper">
+  <h1 class="dashboard-title">All Teams</h1>
+
+  <div class="dash-grid-top">
+    {% for t in teams %}
+      <section class="card dash-card">
+        <h2>{{ t.team_name }}</h2>
+        <p><strong>Invite Code:</strong> {{ t.invite_code }}</p>
+        <p><strong>Members:</strong></p>
+        <ul class="list-box">
+          {% for m in t.members %}
+            <li>{{ m.name }} – {{ m.email }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>
