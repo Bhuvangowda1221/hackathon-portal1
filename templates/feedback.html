@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback – Hackathon Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">⚡ Hackathon Portal</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('feedback') }}" class="active">Feedback</a>
+  </nav>
+</header>
+
+<div class="form-container">
+  <h2>Feedback</h2>
+  <p class="form-subtitle">We value your experience</p>
+
+  <form method="POST">
+    <label>Your Feedback</label>
+    <textarea name="text" required></textarea>
+
+    <label>Rating</label>
+    <select name="rating" required>
+      <option>Excellent</option>
+      <option>Good</option>
+      <option>Average</option>
+      <option>Poor</option>
+    </select>
+
+    <button class="primary-btn full-width">Submit Feedback</button>
+  </form>
+
+  <h3 style="margin-top:30px;">Your Previous Feedback</h3>
+  <ul class="list-box">
+    {% for fb in feedbacks %}
+      <li>
+        {{ fb.text }}  
+        <div style="font-size:0.75rem;color:#aaa;">Rating: {{ fb.rating }}</div>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hackathon Portal – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">⚡ Hackathon Portal</div>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}" class="active">Home</a>
+      <a href="{{ url_for('register') }}">Register</a>
+      <a href="{{ url_for('login') }}">Login</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('sponsors_page') }}">Sponsors</a>
+      <a href="{{ url_for('faq') }}">FAQ</a>
+      <a href="{{ url_for('feedback') }}">Feedback</a>
+      <a href="{{ url_for('admin_login') }}">Admin</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to the Hackathon Management Portal</h1>
+      <p class="hero-subtext">
+        Register, form teams, track live updates, and submit your project — all in one place.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{{ url_for('register') }}" class="primary-btn">Register Now</a>
+        <a href="{{ url_for('login') }}" class="secondary-btn">Login</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="https://img.freepik.com/free-vector/hackathon-concept-illustration_114360-5970.jpg" alt="Hackathon">
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>What You Can Do</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>📝 Team Registration</h3>
+        <p>Create a team or join using an invite code.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📊 Participant Dashboard</h3>
+        <p>View team info, submission status, and live updates.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📤 Project Submission</h3>
+        <p>Submit GitHub link and demo video easily.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📢 Notifications</h3>
+        <p>Don’t miss important announcements.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🤝 Sponsors</h3>
+        <p>See the sponsors who support the event.</p>
+      </div>
+      <div class="feature-card">
+        <h3>💬 Feedback & FAQ</h3>
+        <p>Ask doubts and share your experience.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <h3>Connect With Us</h3>
+        <p>Follow for updates & future events.</p>
+      </div>
+      <div class="footer-social">
+        <a href="https://instagram.com/YOUR_INSTA" target="_blank" class="social-pill insta">IG</a>
+        <a href="https://x.com/YOUR_X" target="_blank" class="social-pill x">X</a>
+        <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" class="social-pill linkedin">in</a>
+        <a href="https://youtube.com/@YOUR_YT" target="_blank" class="social-pill yt">▶</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 Hackathon Portal · All rights reserved.</p>
+  </footer>
+</body>
+</html>

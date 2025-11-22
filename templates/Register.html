@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register – Hackathon Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">⚡ Hackathon Portal</div>
+  <nav class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('register') }}" class="active">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('sponsors_page') }}">Sponsors</a>
+    <a href="{{ url_for('faq') }}">FAQ</a>
+    <a href="{{ url_for('feedback') }}">Feedback</a>
+  </nav>
+</header>
+
+<div class="form-container">
+  <h2>Create Your Account</h2>
+  <p class="form-subtitle">Register to participate in the hackathon</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <p style="color:{% if category=='error' %}#f97373{% else %}#22c55e{% endif %}; font-size:0.9rem;">
+          {{ msg }}
+        </p>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('register') }}">
+    <label>Name</label>
+    <input type="text" name="name" required placeholder="Enter your name">
+
+    <label>Email</label>
+    <input type="email" name="email" required placeholder="example@gmail.com">
+
+    <label>Phone Number</label>
+    <input type="text" name="phone" required placeholder="9876543210">
+
+    <label>College</label>
+    <input type="text" name="college" required placeholder="Your college">
+
+    <label>Password</label>
+    <input type="password" name="password" required placeholder="Enter password">
+
+    <h3 style="margin-top:18px;">Team Options</h3>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">
+      <label class="radio-line">
+        <input type="radio" name="teamChoice" value="create" required onchange="toggleTeamFields()">
+        <span>Create a New Team</span>
+      </label>
+      <label class="radio-line">
+        <input type="radio" name="teamChoice" value="join" required onchange="toggleTeamFields()">
+        <span>Join Using Invite Code</span>
+      </label>
+    </div>
+
+    <div id="teamNameField" style="display:none; margin-bottom:12px;">
+      <label>Team Name</label>
+      <input type="text" name="teamName" placeholder="Enter team name">
+    </div>
+
+    <div id="inviteCodeField" style="display:none; margin-bottom:12px;">
+      <label>Invite Code</label>
+      <input type="text" name="inviteCode" placeholder="Enter invite code">
+    </div>
+
+    <button type="submit" class="primary-btn full-width">Register</button>
+  </form>
+</div>
+
+<script>
+function toggleTeamFields() {
+  const choice = document.querySelector('input[name="teamChoice"]:checked').value;
+  if (choice === "create") {
+    document.getElementById("teamNameField").style.display = "block";
+    document.getElementById("inviteCodeField").style.display = "none";
+  } else {
+    document.getElementById("teamNameField").style.display = "none";
+    document.getElementById("inviteCodeField").style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>
