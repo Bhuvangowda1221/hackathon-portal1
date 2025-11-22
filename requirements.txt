@@ -1,4 +1,4 @@
 Flask
-Flask_SQLAlchemy
+Flask-SQLAlchemy
 Werkzeug
 gunicorn
